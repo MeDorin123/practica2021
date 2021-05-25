@@ -42,9 +42,96 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Task list</h3>
+                
             </div>
 
-            <div class="card-body">
+<div class="ButtonAddTask">
+      
+   
+ <button
+type="button"
+class="btn btn-block btn-success" 
+style="width:104px;height:35px;position:absolute; right:95px;top:30px;
+
+-moz-border-radius: 15px;
+-webkit-border-radius: 15px;
+border-radius: 15px;"
+@foreach ($tasks as $task) 
+let task = button.data('task');
+@endforeach
+data-target="#ButtonTaskAddModal"
+data-toggle="modal">
+
+
+<i class="fas fa-plus" style="position:relative;right:5px;font-size:14px;"></i>
+ Add Task</button> 
+
+</div>
+
+
+
+    <div class="card-body">
+        <div class="modal fade" id="ButtonTaskAddModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add task</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger hidden" id="taskAddAlert"></div>
+
+                         <div class="form-group">
+                            <label for="taskAddBoard_Id">Board</label>
+                         
+                            <select class="custom-select rounded-0" id="taskAddBoard_Id">
+                                
+                               
+                                @foreach ($Allboards as $selectBoard)
+                                    <option value="{{$selectBoard->id}}">{{$selectBoard->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                       
+                       
+                        <div class="form-group">
+                            <label for="taskAddName">Name</label>
+                            <input type="text" class="form-control" id="AddTaskName" placeholder="Name task">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskEditDescription">Description</label>
+                            <textarea class="form-control" id="AddTaskDescription" placeholder="Description"></textarea>
+                        </div> 
+                        <div class="form-group">
+                            <label for="taskEditAssignment">Assignment</label>
+                            <select class="custom-select rounded-0" id="AddTaskAssignment">
+                                <option value="">Unassigned</option>
+                                @foreach ($boardUsers as $boardUser)
+                                    <option value="{{$boardUser->user_id}}">{{$boardUser->user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="AddTaskStatus">Status</label>
+                            <select class="custom-select rounded-0" id="AddTaskStatus">
+                                <option value="0">Created</option>
+                                <option value="1">In progress</option>
+                                <option value="2">Done</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="AddTaskSave">Save task</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -70,7 +157,8 @@
                                         <span class="badge bg-success">Done</span>
                                     @endif
                                 </td>
-                                <td>{{$task->created_at->format('j M Y H:i:s')}}</td>
+                                <td>{{$task->created_at->format('j M Y H:i:s')}}</td> 
+                             
                                 <td>
                                     <div class="btn-group">
                                         <button class="btn btn-sm btn-primary"

@@ -53,6 +53,58 @@ class BoardController extends Controller
         );
     }
 
+
+/**
+     * @param  Request  $request
+     * @param $id
+     *
+     * @return JsonResponse
+     */
+    public function addboard(Request $request): JsonResponse
+    {
+        $error = '';
+        $success = '';
+
+            $request->validate([
+                
+                'Name' => 'required|unique:boards,Name',
+                'user_id' => 'required',
+              
+            ]);
+        // $error=[
+
+        // 'Name.required'=>'Your First Name is Required', // custom message
+        // 'Name.unique'=>'Your First Name is unique', // custom message
+
+        // ]
+        
+    // );
+
+       
+
+       
+        $board=Board::insert([
+               
+            'name'=>$request->Name,
+            'user_id'=>$request->user_id ,
+            'created_at'=>now()]);
+
+           if($board)
+           {
+            $success = 'Board saved';
+            }
+         else 
+         {
+            $error = 'Board not saved';
+
+         }
+
+return response()->json(['error' => $error, 'success' => $success]);
+
+}
+
+
+
     /**
      * @param  Request  $request
      * @param $id
@@ -169,8 +221,12 @@ class BoardController extends Controller
         }
 
         $tasks = $board->tasks()->oldest()->paginate(10);
+        
 
         $boardUsers = $board->boardUsers()->with('user')->get();
+
+    // dd($boardUsers);
+$Allboards =Board::all();
 
         return view(
             'boards.view',
@@ -178,10 +234,80 @@ class BoardController extends Controller
                 'board' => $board,
                 'boards' => $boards,
                 'tasks' => $tasks,
-                'boardUsers' => $boardUsers
+                'boardUsers' => $boardUsers,
+                'Allboards'=>$Allboards
             ]
         );
     }
+
+ /**
+     * @param  Request  $request
+     * @param $id
+     *
+     * @return JsonResponse
+     */
+    public function addTask(Request $request): JsonResponse
+    {
+        $error = '';
+        $success = '';
+
+         $request->validate([
+                
+                'Name' => 'required|unique:tasks,Name',
+                'Description' => 'required',
+                'Assignment' => 'required',
+                'Status' => 'required',
+         ],
+         [
+ 'Name.unique'=>'Your First Name is Unique', 
+ 'Name.required'=>'Your First Name is Required',
+ 'Description.required'=>'Your First Name is Required',
+ 'Assignment.required'=>'Your First Name is Required',
+ 'Status.required'=>'Your First Name is Required',
+     ]);
+     
+
+                    $task = Task::insert([
+                        'board_id' => $request->Board_Id,
+                        'name' => $request->Name,
+                        'description' => $request->Description,
+                        'assignment' => $request->Assignment,
+                        'status' => $request->Status,
+                        'created_at' => now()]);
+                    if ($task) {
+                        $success = 'Task saved';
+                    } else {
+                        $error = 'Task not saved';
+
+                    }
+
+return response()->json(['error' => $error, 'success' => $success,]);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * @param  Request  $request

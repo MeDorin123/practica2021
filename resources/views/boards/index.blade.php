@@ -25,7 +25,61 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Boards list</h3>
+               
+            </div> 
+            
+           
+ <button 
+ type="button" 
+ class="btn btn-block btn-success"
+  style="width:104px;height:35px;position:absolute; right:95px;top:30px; 
+  -moz-border-radius: 15px;
+-webkit-border-radius: 15px;
+border-radius: 15px;
+"
+ data-target="#ButtonBoardAddModal"
+data-toggle="modal">
+
+  <i class="fas fa-plus" style="position:relative;right:5px;font-size:14px;"></i>
+ Add Board</button> 
+
+
+
+ <div class="modal fade" id="ButtonBoardAddModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add board</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger hidden" id="boardAddAlert"></div>
+                        <input type="hidden" id="boardAddId" value="" />
+
+                        <div class="form-group">
+                            <label for="boardAddName">Name</label>
+                            <input type="text" class="form-control" id="boardAddName" placeholder="Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="boardAddBoard">User Owner Board</label>
+                            <select class="custom-select rounded-0" id="boardAddUser" style="width: 100%;">
+                                @foreach ($userList as $user)
+                                    <option value="{{$user['id']}}">{{$user['name']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="boardAddButton">Save board</button>
+                    </div>
+                </div>
             </div>
+        </div>
+
 
             <div class="card-body">
                 <table class="table table-bordered">

@@ -34,6 +34,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Board whereUpdatedAt($value)
  * @method static Builder|Board whereUserId($value)
  */
+
 class Board extends Model
 {
     use HasFactory;
@@ -83,6 +84,6 @@ class Board extends Model
      */
     public function tasks(): HasMany
     {
-        return $this->hasMany(Task::class, 'board_id', 'id');
+        return $this->hasMany(Task::class, 'board_id', 'id','assignment');
     }
 }

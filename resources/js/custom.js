@@ -208,3 +208,234 @@ $(document).ready(function() {
     });
 
 });
+
+
+$('#ButtonBoardAddModal').on('shown.bs.modal', function (event) {
+    let button = $(event.relatedTarget); // Button that triggered the modal
+    
+
+    let modal = $(this);
+
+
+
+});
+
+$(document).ready(function () {
+    $('#boardAddButton').on('click', function () {
+        $('#boardAddAlert').addClass('hidden');
+
+        let Name = $('#boardAddName').val();
+        let user_id = $('#boardAddUser').val();
+       
+        // console.log(Name); //
+       // console.log(user_id); //
+        $.ajax({
+            method: 'POST',
+            url: '/board/add',
+            data: {Name,user_id,}
+        }).done(function (response) {
+            if (response.error !== '') {
+                $('#taskAddAlert').text(response.error).removeClass('hidden');
+            } else {
+                window.location.reload();
+            }
+        });
+
+    });
+});
+
+$('#ButtonTaskAddModal').on('shown.bs.modal', function (event) {
+    let button = $(event.relatedTarget); // Button that triggered the modal
+    let task = button.data('task');
+
+    let modal = $(this);
+
+
+    
+});
+
+$(document).ready(function () {
+    $('#AddTaskSave').on('click', function () {
+        $('#taskAddAlert').addClass('hidden');
+
+        let Name = $('#AddTaskName').val();
+        let Description = $('#AddTaskDescription').val();
+        let Assignment = $('#AddTaskAssignment').val();
+        let Status = $('#AddTaskStatus').val();
+        let Board_Id = $('#taskAddBoard_Id').val();
+
+// console.log(Name); //
+// console.log(Description);//Descriere
+// console.log(Assignment);//Id-ul Numelui
+// console.log(Status);//created,progress,done
+ //console.log(Board_Id);//created,progress,done
+
+        $.ajax({
+            method: 'POST',
+            url: '/task/add',
+            data: { Name, Description, Assignment, Status, Board_Id }
+        }).done(function (response) {
+            if (response.error !== '') {
+                $('#taskAddAlert').text(response.error).removeClass('hidden');
+            } else {
+                window.location.reload();
+            }
+        });
+   
+    });
+});
+
+
+$(function () {
+    'use strict'
+
+    var ticksStyle = {
+        fontColor: '#495057',
+        fontStyle: 'bold'
+    }
+
+    var mode = 'index'
+    var intersect = true
+
+
+    var $visitorsChart = $('#visitors-chart')
+
+
+
+//Numarul zilelor din divuri
+    var $SixdaysagoVal = $('#SixdaysagoVal').val();
+    var $FivedaysagosagoVal = $('#FivedaysagosagoVal').val();
+    var $FourdaysagoVal = $('#FourdaysagoVal').val();
+    var $ThreedaysagoVal = $('#ThreedaysagoVal').val();
+    var $OtherdayVal = $('#OtherdayVal').val();
+    var $YesterdayVal = $('#YesterdayVal').val();
+    var $todayVal = $('#todayVal').val();
+  
+//   Numarul de vizitatori pe zile
+
+    var $VizitatoriSixdaysagoVal = $('#VizitatoriSixdaysagoVal').val();
+    var $VizitatoriFivedaysagoVal = $('#VizitatoriFivedaysagoVal').val();
+    var $VizitatoriFourdaysagoVal = $('#VizitatoriFourdaysagoVal').val();
+    var $VizitatoriThreedaysagoVal = $('#VizitatoriThreedaysagoVal').val();
+    var $VizitatoriOtherdayVal = $('#VizitatoriOtherdayVal').val();
+    var $VizitatoriYesterdayVal = $('#VizitatoriYesterdayVal').val();
+    var $VizitatoriTodayVal = $('#VizitatoriTodayVal').val();
+
+
+    //   Numarul de vizite pe zile
+
+    var $ViziteSixdaysagoVal = $('#ViziteSixdaysagoVal').val();
+    var $ViziteFivedaysagoVal = $('#ViziteFivedaysagoVal').val();
+    var $ViziteFourdaysagoVal = $('#ViziteFourdaysagoVal').val();
+    var $ViziteThreedaysagoVal = $('#ViziteThreedaysagoVal').val();
+    var $ViziteOtherdayVal = $('#ViziteOtherdayVal').val();
+    var $ViziteYesterdayVal = $('#ViziteYesterdayVal').val();
+    var $ViziteTodayVal = $('#ViziteTodayVal').val();
+
+ 
+    var visitorsChart = new Chart($visitorsChart, {
+        data: { //zilele
+            labels: [$SixdaysagoVal+'th', $FivedaysagosagoVal+'th', $FourdaysagoVal+'th', $ThreedaysagoVal+'th', $OtherdayVal+'th', $YesterdayVal+'th', $todayVal+'th' ],
+            datasets: [{
+                type: 'line',
+                data: [ //Numarul de vizitatori pe zile
+                    $VizitatoriSixdaysagoVal,//vizitatorii de acum 6 zile
+                    $VizitatoriFivedaysagoVal,//vizitatorii de acum 5 zile
+                    $VizitatoriFourdaysagoVal,
+                    $VizitatoriThreedaysagoVal,
+                     $VizitatoriOtherdayVal,
+                      $VizitatoriYesterdayVal,
+                    $VizitatoriTodayVal //vizitatorii Today
+                    ],
+
+                backgroundColor: 'transparent',
+                borderColor: '#007bff',
+                pointBorderColor: '#007bff',
+                pointBackgroundColor: '#007bff',
+                fill: false
+              
+            },
+            {
+                type: 'line',
+                data: [
+                    $ViziteSixdaysagoVal,
+                     $ViziteFivedaysagoVal,
+                      $ViziteFourdaysagoVal,
+                       $ViziteThreedaysagoVal,
+                        $ViziteOtherdayVal, 
+                        $ViziteYesterdayVal, 
+                        $ViziteTodayVal],//Numarul de vizite Azi
+
+              
+                backgroundColor: 'tansparent',
+                borderColor: '#ced4da',
+                pointBorderColor: '#ced4da',
+                pointBackgroundColor: '#ced4da',
+                fill: false
+               
+            }]
+        },
+        options: {
+           maintainAspectRatio: false,
+            tooltips: {
+                mode: mode,
+                intersect: intersect
+            },
+            hover: {
+                mode: mode,
+                intersect: intersect
+            },
+            legend: {
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    // display: false,
+                    gridLines: {
+                        display: true,
+                        //lineWidth: '4px',
+                        lineWidth: '4px',
+                        color: 'rgba(0, 0, 0, .2)',
+                        zeroLineColor: 'transparent'
+                    },
+                    ticks: $.extend({
+                        beginAtZero: true,
+                        suggestedMax: 200
+                    }, ticksStyle)
+                }],
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: ticksStyle
+                }]
+            }
+        }
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

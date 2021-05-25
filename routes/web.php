@@ -31,8 +31,11 @@ Route::match(['get', 'post'], '/reset-password', [AuthController::class, 'resetP
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['visitors'])->group(function () {
 
+    
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+  });
     Route::middleware(['admin'])->group(function () {
         Route::get('/users', [AdminController::class, 'users'])->name('users.all');
         Route::post('/user/update', [AdminController::class, 'updateUser'])->name('users.update');
@@ -41,11 +44,15 @@ Route::middleware(['verified'])->group(function () {
     });
 
     Route::get('/boards', [BoardController::class, 'boards'])->name('boards.all');
+
+    Route::post('/board/add', [BoardController::class, 'addboard'])->name('boards.add');
     Route::post('/board/update/{id}', [BoardController::class, 'updateBoard'])->name('boards.update');
     Route::post('/board/delete/{id}', [BoardController::class, 'deleteBoard'])->name('boards.delete');
 
     Route::get('/board/{id}', [BoardController::class, 'board'])->name('board.view');
 
+
+    Route::post('/task/add', [BoardController::class, 'addTask'])->name('tasks.add');
     Route::post('/task/update/{id}', [BoardController::class, 'updateTask'])->name('tasks.update');
     Route::post('/task/delete/{id}', [BoardController::class, 'deleteTask'])->name('tasks.delete');
 });
